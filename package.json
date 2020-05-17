@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron": "cross-env NODE_ENV=desktop npm run build && electron ./dist",
-    "release": "cross-env NODE_ENV=desktop npm run build && electron-packager ./dist cutting-stock"
+    "release": "cross-env NODE_ENV=desktop npm run build && electron-packager ./dist cutting-stock --overwrite"
   },
   "dependencies": {
     "core-js": "^3.6.4",

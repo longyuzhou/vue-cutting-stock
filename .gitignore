@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/cutting-stock-win32-x64
 
 # local env files
 .env.local
