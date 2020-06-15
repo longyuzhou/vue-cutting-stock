@@ -10,6 +10,8 @@ A application used to solve cutting stock problem.
 
 **I'm using "First Fit Decreasing" algorithm, which will not give you the best solution.**
 
+![alt](public/screenshot.png)
+
 ## Project setup
 
 ```
