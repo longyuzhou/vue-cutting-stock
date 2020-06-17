@@ -15,8 +15,4 @@ export default {
 };
 </script>
 
-<style scoped>
-#app {
-  padding: 10px 10px;
-}
-</style>
+<style scoped></style>

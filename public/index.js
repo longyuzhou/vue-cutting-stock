@@ -1,15 +1,22 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    title: '材料切割',
     width: 1280,
     height: 720,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+  });
+
+  mainWindow.on('ready-to-show', () => {
+    mainWindow.show();
+    mainWindow.focus();
   });
 
   // and maximize window
@@ -19,8 +26,10 @@ function createWindow() {
   mainWindow.loadFile('index.html');
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools();
 }
+
+Menu.setApplicationMenu(null);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

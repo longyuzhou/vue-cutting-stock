@@ -1,8 +1,8 @@
 <template>
   <div class="h-100 d-flex flex-row">
     <form
-      class="h-100 d-flex flex-column"
-      style="width:350px; padding-right: 10px"
+      class="h-100 d-flex flex-column d-print-none"
+      style="width: 360px; padding: 10px"
       @submit="onSubmit"
     >
       <div class="form-group was-validated">
@@ -31,8 +31,8 @@
         <input type="submit" class="btn btn-primary btn-block" value="计算" />
       </div>
     </form>
-    <div class="h-100 flex-grow-1">
-      <textarea class="form-control h-100" readonly :value="solution" />
+    <div class="screen-flex-grow-1 screen-overflow-auto">
+      <Solution />
     </div>
   </div>
 </template>
@@ -41,7 +41,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import Orders from '../components/Orders';
 import AddOrder from './AddOrder';
-import utils from '../utils';
+import Solution from './Solution';
+import { error, StringBuffer } from '../utils';
 
 export default {
   name: 'CuttingStock',
@@ -68,42 +69,43 @@ export default {
         this.setLosses(val);
       },
     },
-    ...mapGetters(['orders', 'solution']),
+    ...mapGetters(['orders']),
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
       const { material, losses, orders } = this;
       if (typeof material !== 'number' || material <= 0) {
-        utils.error('材料长度输入不正确');
+        error('材料长度输入不正确');
         return;
       }
       if (typeof losses !== 'number' || losses < 0) {
-        utils.error('切割损耗输入不正确');
+        error('切割损耗输入不正确');
         return;
       }
       if (material <= losses) {
-        utils.error(`材料长度(${material})应大于切割损耗(${losses})`);
+        error(`材料长度(${material})应大于切割损耗(${losses})`);
         return;
       }
       const invalidOrders = orders.filter((order) => order.length > material);
       if (invalidOrders.length > 0) {
-        const sb = new utils.StringBuffer();
+        const sb = new StringBuffer();
         sb.append('尺寸(')
           .append(invalidOrders.map((order) => order.length).join(', '))
           .append(')不得大于材料长度(')
           .append(material)
           .append(')');
-        utils.error(sb.toString());
+        error(sb.toString());
         return;
       }
-      this.findSolution({ material, losses, orders });
+      this.solve({ material, losses, orders });
     },
-    ...mapActions(['setMaterial', 'setLosses', 'findSolution']),
+    ...mapActions(['setMaterial', 'setLosses', 'solve']),
   },
   components: {
     Orders,
     AddOrder,
+    Solution,
   },
 };
 </script>
@@ -118,5 +120,13 @@ textarea {
   background-color: white;
   font-size: 17px;
   line-height: 18px;
+}
+@media screen {
+  .screen-flex-grow-1 {
+    flex-grow: 1 !important;
+  }
+  .screen-overflow-auto {
+    overflow: auto;
+  }
 }
 </style>

@@ -234,9 +234,20 @@ class StringBuffer {
   }
 }
 
-export default {
-  cut_and_print,
-  range,
-  error,
-  StringBuffer,
-};
+function round(x, scale) {
+  if (
+    typeof x !== 'number' ||
+    isNaN(x) ||
+    typeof scale !== 'number' ||
+    isNaN(scale) ||
+    scale % 1 != 0 ||
+    scale < 0
+  ) {
+    return NaN;
+  }
+
+  const base = Math.pow(10, scale);
+  return Math.round(x * base) / base;
+}
+
+export { firstFitDecreasing, cut_and_print, range, error, StringBuffer, same_array, round };
