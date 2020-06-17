@@ -5,16 +5,8 @@ const state = {
   losses: 0.1,
   orders: [
     { length: 100, count: 10 },
-    { length: 150, count: 10 },
     { length: 190, count: 10 },
-    { length: 200, count: 10 },
-    { length: 250, count: 10 },
     { length: 300, count: 10 },
-    { length: 350, count: 10 },
-    { length: 400, count: 10 },
-    { length: 450, count: 10 },
-    { length: 500, count: 10 },
-    { length: 550, count: 10 },
   ],
   solution: {},
 };
