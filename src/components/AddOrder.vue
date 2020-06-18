@@ -7,13 +7,7 @@
       placeholder="尺寸"
       v-model.number="length"
     />
-    <input
-      type="number"
-      class="form-control"
-      min="1"
-      placeholder="数量"
-      v-model.number="count"
-    />
+    <input type="number" class="form-control" min="1" placeholder="数量" v-model.number="count" />
     <input type="submit" class="btn btn-primary" value="添加" />
   </form>
 </template>
@@ -30,18 +24,18 @@ export default {
       count: 1,
     };
   },
-  computed: mapGetters(['material']),
+  computed: mapGetters(['stockLength']),
   methods: {
     ...mapActions(['addOrder']),
     onSubmit(e) {
       e.preventDefault();
-      const { length, count, material } = this;
+      const { length, count, stockLength } = this;
       if (typeof length !== 'number' || length <= 0) {
         error('尺寸输入不正确');
         return;
       }
-      if (length > material) {
-        error(`尺寸(${length})不得大于材料长度(${material})`);
+      if (length > stockLength) {
+        error(`尺寸(${length})不得大于材料长度(${stockLength})`);
         return;
       }
       if (typeof count !== 'number' || count <= 0) {

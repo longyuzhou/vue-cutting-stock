@@ -1,9 +1,8 @@
 <template>
-  <div class="h-100 d-flex flex-row">
-    <form
-      class="h-100 d-flex flex-column d-print-none"
-      style="width: 360px; padding: 10px"
-      @submit="onSubmit"
+  <div class="h-100">
+    <div
+      class="pt-2 pb-2 pl-2 h-100 float-left d-flex flex-column d-print-none"
+      style="width: 350px"
     >
       <div class="form-group was-validated">
         <label>材料长度</label>
@@ -13,12 +12,12 @@
           required
           min="0"
           step="any"
-          v-model.number="material"
+          v-model.number="stockLength"
         />
       </div>
       <div class="form-group was-validated">
         <label>切割损耗</label>
-        <input type="number" class="form-control" min="0" step="any" v-model.number="losses" />
+        <input type="number" class="form-control" min="0" step="any" v-model.number="kerf" />
       </div>
       <div class="form-group">
         <label>订单</label>
@@ -28,10 +27,10 @@
         <Orders />
       </div>
       <div>
-        <input type="submit" class="btn btn-primary btn-block" value="计算" />
+        <button class="btn btn-primary btn-block" @click="onSolve">计算</button>
       </div>
-    </form>
-    <div class="screen-flex-grow-1 screen-overflow-auto">
+    </div>
+    <div class="h-100 solution-container">
       <Solution />
     </div>
   </div>
@@ -47,60 +46,59 @@ import { error, StringBuffer } from '../utils';
 export default {
   name: 'CuttingStock',
   computed: {
-    material: {
+    stockLength: {
       get() {
-        return this.$store.state.cuttingStock.material;
+        return this.$store.state.cuttingStock.stockLength;
       },
       set(val) {
         if (typeof val !== 'number') {
           val = null;
         }
-        this.setMaterial(val);
+        this.setStockLength(val);
       },
     },
-    losses: {
+    kerf: {
       get() {
-        return this.$store.state.cuttingStock.losses;
+        return this.$store.state.cuttingStock.kerf;
       },
       set(val) {
         if (typeof val !== 'number') {
           val = 0;
         }
-        this.setLosses(val);
+        this.setKerf(val);
       },
     },
     ...mapGetters(['orders']),
   },
   methods: {
-    onSubmit(e) {
-      e.preventDefault();
-      const { material, losses, orders } = this;
-      if (typeof material !== 'number' || material <= 0) {
+    ...mapActions(['setStockLength', 'setKerf', 'solve']),
+    onSolve() {
+      const { stockLength, kerf, orders } = this;
+      if (typeof stockLength !== 'number' || stockLength <= 0) {
         error('材料长度输入不正确');
         return;
       }
-      if (typeof losses !== 'number' || losses < 0) {
+      if (typeof kerf !== 'number' || kerf < 0) {
         error('切割损耗输入不正确');
         return;
       }
-      if (material <= losses) {
-        error(`材料长度(${material})应大于切割损耗(${losses})`);
+      if (stockLength <= kerf) {
+        error(`材料长度(${stockLength})应大于切割损耗(${kerf})`);
         return;
       }
-      const invalidOrders = orders.filter((order) => order.length > material);
+      const invalidOrders = orders.filter((order) => order.length > stockLength);
       if (invalidOrders.length > 0) {
         const sb = new StringBuffer();
         sb.append('尺寸(')
           .append(invalidOrders.map((order) => order.length).join(', '))
           .append(')不得大于材料长度(')
-          .append(material)
+          .append(stockLength)
           .append(')');
         error(sb.toString());
         return;
       }
-      this.solve({ material, losses, orders });
+      this.solve({ stockLength, kerf, orders });
     },
-    ...mapActions(['setMaterial', 'setLosses', 'solve']),
   },
   components: {
     Orders,
@@ -111,22 +109,11 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-  font-family: sarasa-gothic;
-  src: url(../assets/sarasa-mono-sc-regular.ttf) format('opentype');
-}
-textarea {
-  font-family: sarasa-gothic;
-  background-color: white;
-  font-size: 17px;
-  line-height: 18px;
-}
 @media screen {
-  .screen-flex-grow-1 {
-    flex-grow: 1 !important;
-  }
-  .screen-overflow-auto {
+  .solution-container {
     overflow: auto;
+    flex-grow: 1 !important;
+    margin-left: 350px;
   }
 }
 </style>

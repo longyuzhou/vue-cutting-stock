@@ -1,8 +1,8 @@
 import { range, firstFitDecreasing, same_array, round } from '../../utils';
 
 const state = {
-  material: 600,
-  losses: 0.1,
+  stockLength: 600,
+  kerf: 0.1,
   orders: [
     { length: 100, count: 10 },
     { length: 190, count: 10 },
@@ -12,22 +12,22 @@ const state = {
 };
 
 const getters = {
-  material: (state) => state.material,
-  losses: (state) => state.losses,
+  stockLength: (state) => state.stockLength,
+  kerf: (state) => state.kerf,
   orders: (state) => state.orders,
   solution: (state) => state.solution,
 };
 
 const actions = {
-  setMaterial: ({ commit }, val) => commit('setMaterial', val),
+  setStockLength: ({ commit }, val) => commit('setStockLength', val),
 
-  setLosses: ({ commit }, val) => commit('setLosses', val),
+  setKerf: ({ commit }, val) => commit('setKerf', val),
 
   addOrder: ({ commit }, order) => commit('addOrder', order),
 
   removeOrder: ({ commit }, length) => commit('removeOrder', length),
 
-  solve: ({ commit }, { material, losses, orders }) => {
+  solve: ({ commit }, { stockLength, kerf, orders }) => {
     // 订单二维数组转一维
     const detail = orders.reduce((p, c) => {
       range(c.count).forEach(() => p.push(c.length));
@@ -36,7 +36,7 @@ const actions = {
 
     // 调用材料分割算法
     const patterns = [];
-    firstFitDecreasing(material, losses, detail).forEach((solution) => {
+    firstFitDecreasing(stockLength, kerf, detail).forEach((solution) => {
       // 如果切割方案相同，则合并计数
       const item = patterns.find((item) => same_array(solution, item.solution));
       if (item) {
@@ -54,8 +54,8 @@ const actions = {
       materialWaste: 0,
       cutWaste: 0,
       totalWaste: 0,
-      stockLength: material,
-      kerf: losses,
+      stockLength: stockLength,
+      kerf: kerf,
       layoutPatterns: [],
     };
 
@@ -85,7 +85,7 @@ const actions = {
         }
       });
 
-      let materialWaste = Math.max(material - totalPartsLength - totalParts * losses, 0);
+      let materialWaste = Math.max(stockLength - totalPartsLength - totalParts * kerf, 0);
       solution.materialWaste += materialWaste * pattern.count;
       materialWaste = round(materialWaste, scale);
       if (materialWaste > 0) {
@@ -95,12 +95,12 @@ const actions = {
         );
       }
 
-      let cutWaste = (totalParts - 1) * losses;
-      cutWaste += Math.min(material - totalPartsLength - (totalParts - 1) * losses, losses);
+      let cutWaste = (totalParts - 1) * kerf;
+      cutWaste += Math.min(stockLength - totalPartsLength - (totalParts - 1) * kerf, kerf);
       solution.cutWaste += cutWaste * pattern.count;
 
       const totalWaste = materialWaste + cutWaste;
-      const totalWastePercentage = (totalWaste / material) * 100;
+      const totalWastePercentage = (totalWaste / stockLength) * 100;
       solution.layoutPatterns.push({
         _key: idx,
         repetition: pattern.count,
@@ -126,8 +126,8 @@ const actions = {
 };
 
 const mutations = {
-  setMaterial: (state, val) => (state.material = val),
-  setLosses: (state, val) => (state.losses = val),
+  setStockLength: (state, val) => (state.stockLength = val),
+  setKerf: (state, val) => (state.kerf = val),
   addOrder: (state, val) => {
     const idx = state.orders.findIndex((x) => x.length === val.length);
     let order = null;

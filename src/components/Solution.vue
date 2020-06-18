@@ -1,10 +1,16 @@
 <template>
-  <div class="container">
-    <div class="sticky-top text-right d-print-none">
-      <button type="button" class="btn btn-light" @click="saveAsPdf">打印</button>
+  <div class="container-fluid pt-2">
+    <div class="sticky-top text-right d-print-none" style="height: 0px">
+      <button type="button" class="btn btn-info mt-1" @click="print">打印</button>
     </div>
-    <div class="title">订单:</div>
-    <table class="table">
+    <div class="title font-weight-bold">订单:</div>
+    <div class="row">
+      <div class="col-2">材料长度:</div>
+      <div class="col-2">{{ solution.stockLength }}</div>
+      <div class="col-2">切割损耗:</div>
+      <div class="col-2">{{ solution.kerf }}</div>
+    </div>
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th>长度</th>
@@ -18,7 +24,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="title">切割方案:</div>
+    <div class="title font-weight-bold">切割方案:</div>
     <div class="row">
       <div class="col-2">所需材料:</div>
       <div class="col-2">{{ solution.requiredStocks }}</div>
@@ -33,35 +39,35 @@
         {{ solution.totalWaste }} {{ displayPercentage(totalWastePercentage) }}
       </div>
     </div>
-    <table class="table">
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>次数</th>
-          <th>切割方法</th>
-          <th>余料</th>
-          <th>切割损耗</th>
-          <th>损耗合计</th>
+          <th class="text-nowrap">次数</th>
+          <th class="text-nowrap">切割方法</th>
+          <th class="text-nowrap">余料</th>
+          <th class="text-nowrap">切割损耗</th>
+          <th class="text-nowrap">损耗合计</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="pattern in solution.layoutPatterns" :key="pattern._key">
-          <td>{{ pattern.repetition }}</td>
+          <td class="text-nowrap">{{ pattern.repetition }}</td>
           <td>
-            <span v-for="cut in pattern.cuts" :key="cut.length">
+            <span v-for="cut in pattern.cuts" :key="cut._key" class="p-1">
               {{ cut.length }}&times;{{ cut.count }}
             </span>
           </td>
-          <td>{{ pattern.materialWaste }}</td>
-          <td>{{ pattern.cutWaste }}</td>
-          <td>
+          <td class="text-nowrap">{{ pattern.materialWaste }}</td>
+          <td class="text-nowrap">{{ pattern.cutWaste }}</td>
+          <td class="text-nowrap">
             {{ pattern.totalWaste }}
             {{ displayPercentage(pattern.totalWastePercentage) }}
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="title">余料详情:</div>
-    <table class="table">
+    <div class="title font-weight-bold">余料详情:</div>
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th>长度</th>
@@ -103,21 +109,11 @@ export default {
 
       return `(${x} %)`;
     },
-    saveAsPdf() {
+    print() {
       window.print();
     },
   },
 };
 </script>
 
-<style scoped>
-.container {
-  padding-top: 10px;
-  font-family: 'Microsoft YaHei';
-  font-size: 18px;
-}
-.title {
-  font-size: 20px;
-  font-weight: bold;
-}
-</style>
+<style scoped></style>
