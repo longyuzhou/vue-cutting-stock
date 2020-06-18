@@ -3,7 +3,7 @@
 [![tag](https://img.shields.io/github/release/longyuzhou/vue-cutting-stock)](https://github.com/longyuzhou/vue-cutting-stock/releases)
 [![](https://img.shields.io/badge/vue-v2.6.11-green.svg)](https://github.com/vuejs/vue)
 [![](https://img.shields.io/badge/vuex-v3.4.0-green.svg)](https://github.com/vuejs/vuex)
-[![](https://img.shields.io/badge/electron-v8.3.0-green.svg)](https://github.com/electron/electron)
+[![](https://img.shields.io/badge/electron-v9.0.2-green.svg)](https://github.com/electron/electron)
 [![license](https://img.shields.io/github/license/longyuzhou/vue-cutting-stock)](https://github.com/longyuzhou/vue-cutting-stock/blob/master/LICENSE)
 
 A application used to solve cutting stock problem.
