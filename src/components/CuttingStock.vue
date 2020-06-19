@@ -1,7 +1,7 @@
 <template>
   <div class="h-100">
     <div
-      class="pt-2 pb-2 pl-2 h-100 float-left d-flex flex-column d-print-none"
+      class="pt-2 pb-2 pl-2 h-100 d-flex flex-column float-left d-print-none"
       style="width: 350px"
     >
       <div class="form-group was-validated">
@@ -23,9 +23,7 @@
         <label>订单</label>
         <AddOrder />
       </div>
-      <div class="form-group flex-grow-1 overflow-auto">
-        <Orders />
-      </div>
+      <Orders />
       <div>
         <button class="btn btn-primary btn-block" @click="onSolve">计算</button>
       </div>
@@ -38,10 +36,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Orders from '../components/Orders';
-import AddOrder from './AddOrder';
-import Solution from './Solution';
 import { error, StringBuffer } from '../utils';
+
+import AddOrder from '../components/AddOrder';
+import Orders from '../components/Orders';
+import Solution from './solution/Solution';
 
 export default {
   name: 'CuttingStock',
@@ -101,8 +100,8 @@ export default {
     },
   },
   components: {
-    Orders,
     AddOrder,
+    Orders,
     Solution,
   },
 };

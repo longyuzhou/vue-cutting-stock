@@ -35,18 +35,26 @@ function firstFitDecreasing(capacity, gap, items) {
 /**
  * 判断两数组是否相等（不考虑数组内元素的顺序）
  */
-function same_array(a, b) {
-  if (a.length != b.length) {
+function arrayEqualsIgnoreOrder(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) {
     return false;
   }
+  if (a === b) {
+    return true;
+  }
+  if (a.length !== b.length) {
+    return false;
+  }
+
   const searched = [];
   for (let i = 0; i < a.length; i++) {
-    const pos = b.findIndex((val, idx) => val === a[i] && searched.indexOf(idx) < 0);
-    if (pos > -1) {
-      searched.push(i);
-    } else {
+    const pos = b.findIndex(
+      (val, idx) => val === a[i] && searched.indexOf(idx) < 0
+    );
+    if (pos < 0) {
       return false;
     }
+    searched.push(i);
   }
   return true;
 }
@@ -120,4 +128,35 @@ function round(x, scale) {
   return Math.round(x * base) / base;
 }
 
-export { firstFitDecreasing, range, error, StringBuffer, same_array, round };
+function countOccurrences(items, equalsFn) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return [];
+  }
+
+  equalsFn =
+    equalsFn ||
+    function(a, b) {
+      return a === b;
+    };
+
+  const result = [];
+  items.forEach((item) => {
+    let entry = result.find((entry) => equalsFn(entry.item, item));
+    if (entry) {
+      entry.count++;
+    } else {
+      result.push({ item: item, count: 1 });
+    }
+  });
+  return result;
+}
+
+export {
+  firstFitDecreasing,
+  range,
+  error,
+  StringBuffer,
+  arrayEqualsIgnoreOrder,
+  round,
+  countOccurrences,
+};

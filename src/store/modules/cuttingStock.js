@@ -1,4 +1,4 @@
-import { range, firstFitDecreasing, same_array, round } from '../../utils';
+import { range, firstFitDecreasing, arrayEqualsIgnoreOrder, countOccurrences } from '../../utils';
 
 const state = {
   stockLength: 600,
@@ -20,108 +20,45 @@ const getters = {
 
 const actions = {
   setStockLength: ({ commit }, val) => commit('setStockLength', val),
-
   setKerf: ({ commit }, val) => commit('setKerf', val),
-
   addOrder: ({ commit }, order) => commit('addOrder', order),
-
   removeOrder: ({ commit }, length) => commit('removeOrder', length),
-
   solve: ({ commit }, { stockLength, kerf, orders }) => {
-    // 订单二维数组转一维
-    const detail = orders.reduce((p, c) => {
-      range(c.count).forEach(() => p.push(c.length));
-      return p;
-    }, []);
+    const patterns = countOccurrences(
+      firstFitDecreasing(
+        stockLength,
+        kerf,
+        orders.reduce((p, c) => {
+          range(c.count).forEach(() => p.push(c.length));
+          return p;
+        }, [])
+      ),
+      arrayEqualsIgnoreOrder
+    ).map((item) => ({ cuts: item.item, repetition: item.count }));
 
-    // 调用材料分割算法
-    const patterns = [];
-    firstFitDecreasing(stockLength, kerf, detail).forEach((solution) => {
-      // 如果切割方案相同，则合并计数
-      const item = patterns.find((item) => same_array(solution, item.solution));
-      if (item) {
-        item.count++;
-      } else {
-        patterns.push({ solution: solution, count: 1 });
-      }
+    commit('setSolution', {
+      stockLength,
+      kerf,
+      orders: orders.map((order) => ({ ...order })),
+      layoutPatterns: patterns.map(({ repetition, cuts }) => {
+        const totalParts = cuts.length;
+        const totalPartsLength = cuts.reduce((prev, curr) => prev + curr, 0);
+        const materialWaste = Math.max(stockLength - totalPartsLength - totalParts * kerf, 0);
+
+        let cutWaste = (totalParts - 1) * kerf;
+        cutWaste += Math.min(stockLength - totalPartsLength - cutWaste, kerf);
+
+        return {
+          repetition: repetition,
+          cuts: countOccurrences(cuts).map((entry) => ({
+            length: entry.item,
+            count: entry.count,
+          })),
+          materialWaste: materialWaste,
+          cutWaste: cutWaste,
+        };
+      }),
     });
-
-    const solution = {
-      orders: [],
-      requiredStocks: 0,
-      totalParts: 0,
-      totalPartsLength: 0,
-      materialWaste: 0,
-      cutWaste: 0,
-      totalWaste: 0,
-      stockLength: stockLength,
-      kerf: kerf,
-      layoutPatterns: [],
-    };
-
-    orders.forEach((order) => {
-      solution.orders.push({ ...order });
-      solution.totalParts += order.count;
-      solution.totalPartsLength += order.length * order.count;
-    });
-
-    const scale = 2;
-
-    const materialWasteDetails = new Map();
-
-    patterns.forEach((pattern, idx) => {
-      solution.requiredStocks += pattern.count;
-
-      let totalParts = pattern.solution.length;
-      let totalPartsLength = 0;
-      const cuts = [];
-      pattern.solution.forEach((x) => {
-        totalPartsLength += x;
-        const cut = cuts.find((y) => x == y.length);
-        if (cut) {
-          cut.count++;
-        } else {
-          cuts.push({ length: x, count: 1 });
-        }
-      });
-
-      let materialWaste = Math.max(stockLength - totalPartsLength - totalParts * kerf, 0);
-      solution.materialWaste += materialWaste * pattern.count;
-      materialWaste = round(materialWaste, scale);
-      if (materialWaste > 0) {
-        materialWasteDetails.set(
-          materialWaste,
-          (materialWasteDetails.get(materialWaste) || 0) + pattern.count
-        );
-      }
-
-      let cutWaste = (totalParts - 1) * kerf;
-      cutWaste += Math.min(stockLength - totalPartsLength - (totalParts - 1) * kerf, kerf);
-      solution.cutWaste += cutWaste * pattern.count;
-
-      const totalWaste = materialWaste + cutWaste;
-      const totalWastePercentage = (totalWaste / stockLength) * 100;
-      solution.layoutPatterns.push({
-        _key: idx,
-        repetition: pattern.count,
-        cuts: cuts,
-        materialWaste: materialWaste,
-        cutWaste: round(cutWaste, scale),
-        totalWaste: round(totalWaste, scale),
-        totalWastePercentage: round(totalWastePercentage, scale),
-      });
-    });
-
-    solution.totalWaste = round(solution.materialWaste + solution.cutWaste, scale);
-    solution.materialWaste = round(solution.materialWaste, scale);
-    solution.cutWaste = round(solution.cutWaste, scale);
-    solution.materialWasteDetails = [];
-    materialWasteDetails.forEach((v, k) =>
-      solution.materialWasteDetails.push({ length: k, count: v })
-    );
-    solution.materialWasteDetails.sort((a, b) => b.length - a.length);
-
-    commit('setSolution', solution);
   },
 };
 

@@ -1,14 +1,21 @@
 <template>
-  <form @submit="onSubmit">
+  <form class="d-flex flex-row" @submit="onSubmit">
     <input
       type="number"
-      class="form-control"
+      class="form-control mr-2"
       step="any"
       placeholder="尺寸"
       v-model.number="length"
     />
-    <input type="number" class="form-control" min="1" placeholder="数量" v-model.number="count" />
-    <input type="submit" class="btn btn-primary" value="添加" />
+    <input
+      type="number"
+      class="form-control mr-2"
+      style="width: 100px"
+      min="1"
+      placeholder="数量"
+      v-model.number="count"
+    />
+    <input type="submit" class="btn btn-outline-primary" value="添加" />
   </form>
 </template>
 
@@ -50,11 +57,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-form {
-  display: grid;
-  grid-template-columns: auto 100px 70px;
-  grid-gap: 10px;
-}
-</style>
