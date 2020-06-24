@@ -1,10 +1,5 @@
 <template>
-  <div class="container-fluid pt-2">
-    <div class="sticky-top text-right d-print-none" style="height: 0px">
-      <button type="button" class="btn btn-info mt-1" @click="print">
-        打印
-      </button>
-    </div>
+  <div class="flex-grow-1 overflow-auto p-2 pl-lg-0">
     <Orders :stockLength="solution.stockLength" :kerf="solution.kerf" :orders="solution.orders" />
     <LayoutPatterns
       :stockLength="solution.stockLength"
@@ -12,6 +7,11 @@
       :layoutPatterns="solution.layoutPatterns"
     />
     <MaterialWastes :layoutPatterns="solution.layoutPatterns" />
+    <div class="text-center d-print-none">
+      <button type="button" class="btn btn-lg btn-link" @click="print">
+        打印
+      </button>
+    </div>
   </div>
 </template>
 

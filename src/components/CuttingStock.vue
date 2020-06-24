@@ -1,9 +1,6 @@
 <template>
-  <div class="h-100">
-    <div
-      class="pt-2 pb-2 pl-2 h-100 d-flex flex-column float-left d-print-none"
-      style="width: 350px"
-    >
+  <div class="h-100 d-flex flex-column flex-lg-row">
+    <div class="input d-flex flex-column flex-lg-grow p-2 d-print-none">
       <div class="form-group was-validated">
         <label>材料长度</label>
         <input
@@ -24,11 +21,12 @@
         <AddOrder />
       </div>
       <Orders />
-      <div>
-        <button class="btn btn-primary btn-block" @click="onSolve">计算</button>
-      </div>
+      <div :class="orders.length > 0 ? 'mt-3' : ''" />
+      <button class="btn btn-primary btn-block" @click="onSolve">
+        计算
+      </button>
     </div>
-    <div class="h-100 solution-container">
+    <div class="output d-flex flex-column flex-grow-1">
       <Solution />
     </div>
   </div>
@@ -45,6 +43,7 @@ import Solution from './solution/Solution';
 export default {
   name: 'CuttingStock',
   computed: {
+    ...mapGetters(['orders']),
     stockLength: {
       get() {
         return this.$store.state.cuttingStock.stockLength;
@@ -67,7 +66,6 @@ export default {
         this.setKerf(val);
       },
     },
-    ...mapGetters(['orders']),
   },
   methods: {
     ...mapActions(['setStockLength', 'setKerf', 'solve']),
@@ -108,11 +106,9 @@ export default {
 </script>
 
 <style scoped>
-@media screen {
-  .solution-container {
-    overflow: auto;
-    flex-grow: 1 !important;
-    margin-left: 350px;
+@media (min-width: 992px) {
+  .input {
+    width: 350px;
   }
 }
 </style>

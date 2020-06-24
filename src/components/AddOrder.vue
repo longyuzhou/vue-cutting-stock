@@ -10,7 +10,6 @@
     <input
       type="number"
       class="form-control mr-2"
-      style="width: 100px"
       min="1"
       placeholder="数量"
       v-model.number="count"

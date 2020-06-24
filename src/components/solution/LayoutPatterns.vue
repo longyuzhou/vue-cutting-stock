@@ -1,37 +1,37 @@
 <template>
   <div>
     <strong>切割方案:</strong>
-    <div class="row">
-      <div class="col-2">所需材料:</div>
-      <div class="col-2">{{ requiredStocks }}</div>
+    <div class="d-flex flex-column flex-sm-row">
+      <div class="w-100 w-sm-50">
+        <span class="p-1">所需材料:</span>
+        <span class="p-1">{{ requiredStocks }}</span>
+      </div>
+      <div class="w-100 w-sm-50">
+        <span class="p-1">余料总长:</span>
+        <span class="p-1">{{ defaultValue(round(materialWaste, 2), '') }}</span>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-2">余料总长:</div>
-      <div class="col-2">{{ round(materialWaste, 2) || '' }}</div>
-      <div class="col-2">切割损耗:</div>
-      <div class="col-2">{{ round(cutWaste, 2) || '' }}</div>
-      <div class="col-2">损耗合计:</div>
-      <div class="col-2">{{ totalWaste }}{{ totalWastePercentage }}</div>
+    <div class="d-flex flex-column flex-sm-row">
+      <div class="w-100 w-sm-50">
+        <span class="p-1">切割损耗:</span>
+        <span class="p-1">{{ defaultValue(round(cutWaste, 2), '') }}</span>
+      </div>
+      <div class="w-100 w-sm-50">
+        <span class="p-1">损耗合计:</span>
+        <span class="p-1">
+          {{ defaultValue(round(totalWaste, 2), '') }}
+          {{ totalWastePercentage }}
+        </span>
+      </div>
     </div>
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th class="text-nowrap">次数</th>
-          <th class="text-nowrap">切割方法</th>
-          <th class="text-nowrap">余料</th>
-          <th class="text-nowrap">切割损耗</th>
-          <th class="text-nowrap">损耗合计</th>
-        </tr>
-      </thead>
-      <tbody>
-        <LayoutPattern
-          v-for="(item, index) in layoutPatterns"
-          :key="index"
-          :stockLength="stockLength"
-          :layoutPattern="item"
-        />
-      </tbody>
-    </table>
+    <ul class="list-group mb-3">
+      <LayoutPattern
+        v-for="(item, index) in layoutPatterns"
+        :key="index"
+        :stockLength="stockLength"
+        :layoutPattern="item"
+      />
+    </ul>
   </div>
 </template>
 
@@ -95,11 +95,17 @@ export default {
       ) {
         return '';
       }
-      return `(${round((totalWaste / requiredStocks / stockLength) * 100, 2)}%)`;
+      return `(${round((totalWaste / requiredStocks / stockLength || 0) * 100, 2)}%)`;
     },
   },
   methods: {
     round,
+    defaultValue: function(value, orElse) {
+      if (typeof value === 'undefined' || isNaN(value)) {
+        return orElse;
+      }
+      return value;
+    },
   },
   components: { LayoutPattern },
 };
