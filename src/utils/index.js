@@ -48,9 +48,7 @@ function arrayEqualsIgnoreOrder(a, b) {
 
   const searched = [];
   for (let i = 0; i < a.length; i++) {
-    const pos = b.findIndex(
-      (val, idx) => val === a[i] && searched.indexOf(idx) < 0
-    );
+    const pos = b.findIndex((val, idx) => val === a[i] && searched.indexOf(idx) < 0);
     if (pos < 0) {
       return false;
     }
@@ -83,21 +81,6 @@ function range() {
   }
   return nums;
 }
-
-const error = (s) => {
-  window.$.confirm({
-    title: '错误',
-    content: s,
-    type: 'red',
-    draggable: false,
-    buttons: {
-      close: {
-        text: '知道了',
-        action: function() {},
-      },
-    },
-  });
-};
 
 class StringBuffer {
   data = [];
@@ -151,12 +134,82 @@ function countOccurrences(items, equalsFn) {
   return result;
 }
 
+function toFloat(text) {
+  if (typeof text === 'number') {
+    return text;
+  }
+
+  if (typeof text === 'string') {
+    if (!/^-?(([1-9]\d*)|0)(\.\d+)?$/.test(text)) {
+      return NaN;
+    }
+    return parseFloat(text);
+  }
+
+  return NaN;
+}
+
+function toInt(text) {
+  if (typeof text === 'number' && Number.isInteger(text)) {
+    return text;
+  }
+
+  if (typeof text === 'string') {
+    if (!/^-?[1-9]\d*$|^0$/.test(text)) {
+      return NaN;
+    }
+    return parseInt(text);
+  }
+
+  return NaN;
+}
+
+function solve(stockLength, kerf, orders) {
+  const patterns = countOccurrences(
+    firstFitDecreasing(
+      stockLength,
+      kerf,
+      orders.reduce((p, c) => {
+        range(c.count).forEach(() => p.push(c.length));
+        return p;
+      }, [])
+    ),
+    arrayEqualsIgnoreOrder
+  ).map((item) => ({ cuts: item.item, repetition: item.count }));
+
+  return {
+    stockLength,
+    kerf,
+    orders: orders.map((order) => ({ ...order })),
+    layoutPatterns: patterns.map(({ repetition, cuts }) => {
+      const totalParts = cuts.length;
+      const totalPartsLength = cuts.reduce((prev, curr) => prev + curr, 0);
+      const materialWaste = Math.max(stockLength - totalPartsLength - totalParts * kerf, 0);
+
+      let cutWaste = (totalParts - 1) * kerf;
+      cutWaste += Math.min(stockLength - totalPartsLength - cutWaste, kerf);
+
+      return {
+        repetition: repetition,
+        cuts: countOccurrences(cuts).map((entry) => ({
+          length: entry.item,
+          count: entry.count,
+        })),
+        materialWaste: materialWaste,
+        cutWaste: cutWaste,
+      };
+    }),
+  };
+}
+
 export {
   firstFitDecreasing,
   range,
-  error,
   StringBuffer,
   arrayEqualsIgnoreOrder,
   round,
   countOccurrences,
+  toFloat,
+  toInt,
+  solve,
 };

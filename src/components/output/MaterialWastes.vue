@@ -1,11 +1,11 @@
 <template>
   <div>
-    <strong>余料详情:</strong>
+    <strong>{{ $t('materialWasteDetail') }}:</strong>
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>长度</th>
-          <th>数量</th>
+          <th>{{ $t('length') }}</th>
+          <th>{{ $t('quantity') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -19,12 +19,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
-  name: 'MaterialWastes',
-  props: ['layoutPatterns'],
   computed: {
+    ...mapGetters('output', ['data']),
     materialWastes: function() {
-      const { layoutPatterns } = this;
+      const {
+        data: { layoutPatterns },
+      } = this;
       if (!Array.isArray(layoutPatterns)) {
         return [];
       }

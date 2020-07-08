@@ -1,23 +1,23 @@
 <template>
   <div>
-    <strong>切割方案:</strong>
+    <strong>{{ $t('layoutPatterns') }}:</strong>
     <div class="d-flex flex-column flex-sm-row">
       <div class="w-100 w-sm-50">
-        <span class="p-1">所需材料:</span>
+        <span class="p-1">{{ $t('requiredStocks') }}:</span>
         <span class="p-1">{{ requiredStocks }}</span>
       </div>
       <div class="w-100 w-sm-50">
-        <span class="p-1">余料总长:</span>
+        <span class="p-1">{{ $t('materialWaste') }}:</span>
         <span class="p-1">{{ defaultValue(round(materialWaste, 2), '') }}</span>
       </div>
     </div>
     <div class="d-flex flex-column flex-sm-row">
       <div class="w-100 w-sm-50">
-        <span class="p-1">切割损耗:</span>
+        <span class="p-1">{{ $t('cutWaste') }}:</span>
         <span class="p-1">{{ defaultValue(round(cutWaste, 2), '') }}</span>
       </div>
       <div class="w-100 w-sm-50">
-        <span class="p-1">损耗合计:</span>
+        <span class="p-1">{{ $t('totalWaste') }}:</span>
         <span class="p-1">
           {{ defaultValue(round(totalWaste, 2), '') }}
           {{ totalWastePercentage }}
@@ -26,9 +26,9 @@
     </div>
     <ul class="list-group mb-3">
       <LayoutPattern
-        v-for="(item, index) in layoutPatterns"
+        v-for="(item, index) in data.layoutPatterns"
         :key="index"
-        :stockLength="stockLength"
+        :stockLength="data.stockLength"
         :layoutPattern="item"
       />
     </ul>
@@ -39,41 +39,51 @@
 import { round } from '../../utils/';
 
 import LayoutPattern from './LayoutPattern';
+import { mapGetters } from 'vuex';
 
 export default {
-  name: 'LayoutPatterns',
-  props: ['stockLength', 'orders', 'layoutPatterns'],
   computed: {
+    ...mapGetters('output', ['data']),
     requiredStocks: function() {
-      const { layoutPatterns } = this;
+      const {
+        data: { layoutPatterns },
+      } = this;
       if (!Array.isArray(layoutPatterns)) {
         return '';
       }
       return layoutPatterns.reduce((acc, curr) => acc + curr.repetition, 0);
     },
     totalParts: function() {
-      const { orders } = this;
+      const {
+        data: { orders },
+      } = this;
       if (!Array.isArray(orders)) {
         return '';
       }
       return orders.reduce((prev, curr) => prev + curr.count, 0);
     },
     totalPartsLength: function() {
-      const { orders } = this;
+      const {
+        data: { orders },
+      } = this;
       if (!Array.isArray(orders)) {
         return '';
       }
       return orders.reduce((prev, curr) => prev + curr.length * curr.count, 0);
     },
     materialWaste: function() {
-      const { layoutPatterns } = this;
+      const {
+        data: { layoutPatterns },
+      } = this;
       if (!Array.isArray(layoutPatterns)) {
         return '';
       }
       return layoutPatterns.reduce((acc, curr) => acc + curr.materialWaste * curr.repetition, 0);
     },
     cutWaste: function() {
-      const { layoutPatterns } = this;
+      const {
+        data: { layoutPatterns },
+      } = this;
       if (!Array.isArray(layoutPatterns)) {
         return '';
       }
@@ -84,7 +94,11 @@ export default {
       return materialWaste + cutWaste;
     },
     totalWastePercentage: function() {
-      const { totalWaste, requiredStocks, stockLength } = this;
+      const {
+        totalWaste,
+        requiredStocks,
+        data: { stockLength },
+      } = this;
       if (
         typeof totalWaste !== 'number' ||
         isNaN(totalWaste) ||

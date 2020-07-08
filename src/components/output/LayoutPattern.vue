@@ -2,27 +2,27 @@
   <li class="list-group-item">
     <div class="d-flex flex-column flex-sm-row">
       <div class="w-100 w-sm-50">
-        <span class="p-1">次数:</span>
+        <span class="p-1">{{ $t('repetition') }}:</span>
         <span class="p-1">{{ layoutPattern.repetition }}</span>
       </div>
       <div class="w-100 w-sm-50">
-        <span class="p-1">余料:</span>
+        <span class="p-1">{{ $t('materialWaste') }}:</span>
         <span class="p-1">{{ round(layoutPattern.materialWaste, 2) }}</span>
       </div>
     </div>
     <div class="d-flex flex-column flex-sm-row">
       <div class="w-100 w-sm-50">
-        <span class="p-1">切割损耗:</span>
+        <span class="p-1">{{ $t('cutWaste') }}:</span>
         <span class="p-1">{{ round(layoutPattern.cutWaste, 2) }}</span>
       </div>
       <div class="w-100 w-sm-50">
-        <span class="p-1">损耗合计:</span>
+        <span class="p-1">{{ $t('totalWaste') }}:</span>
         <span class="p-1">{{ totalWaste }} {{ totalWastePercentage }}</span>
       </div>
     </div>
     <div class="d-flex flex-column flex-sm-row">
       <div class="w-100">
-        <span class="p-1">切割方案:</span>
+        <span class="p-1">{{ $t('cuts') }}:</span>
         <span v-for="(cut, index) in layoutPattern.cuts" :key="index" class="p-1">
           {{ cut.length }}&times;{{ cut.count }}
         </span>
@@ -35,7 +35,6 @@
 import { round } from '../../utils';
 
 export default {
-  name: 'LayoutPattern',
   props: ['stockLength', 'layoutPattern'],
   computed: {
     totalWaste: function() {
