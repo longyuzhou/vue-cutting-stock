@@ -1,11 +1,12 @@
+const orders = [];
+for (let i = 50; i <= 600; i += 50) {
+  orders.push({ length: i, count: 10 });
+}
+
 const state = {
   stockLength: 600,
   kerf: 0.1,
-  orders: [
-    { length: 100, count: 10 },
-    { length: 190, count: 10 },
-    { length: 300, count: 10 },
-  ],
+  orders: orders,
 };
 
 const getters = {

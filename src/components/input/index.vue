@@ -2,10 +2,11 @@
   <div class="h-100 d-flex flex-column">
     <StockLengthInput />
     <KerfInput />
-    <Orders />
-    <b-button block variant="primary" @click="submit">
+    <OrderCreator />
+    <OrderList />
+    <button class="btn btn-block btn-primary" @click="submit">
       {{ $t('solve') }}
-    </b-button>
+    </button>
   </div>
 </template>
 
@@ -13,14 +14,10 @@
 import { mapGetters } from 'vuex';
 import StockLengthInput from './StockLengthInput';
 import KerfInput from './KerfInput';
-import Orders from './Orders';
+import OrderCreator from './OrderCreator';
+import OrderList from './OrderList';
 
 export default {
-  components: {
-    StockLengthInput,
-    KerfInput,
-    Orders,
-  },
   computed: mapGetters('input', ['stockLength', 'kerf', 'orders']),
   methods: {
     submit() {
@@ -52,6 +49,12 @@ export default {
 
       return true;
     },
+  },
+  components: {
+    StockLengthInput,
+    KerfInput,
+    OrderCreator,
+    OrderList,
   },
 };
 </script>

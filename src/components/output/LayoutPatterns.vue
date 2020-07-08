@@ -24,14 +24,14 @@
         </span>
       </div>
     </div>
-    <ul class="list-group mb-3">
+    <div class="list-group mb-3">
       <LayoutPattern
         v-for="(item, index) in data.layoutPatterns"
         :key="index"
         :stockLength="data.stockLength"
         :layoutPattern="item"
       />
-    </ul>
+    </div>
   </div>
 </template>
 

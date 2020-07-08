@@ -1,5 +1,5 @@
 <template>
-  <li class="list-group-item">
+  <div class="list-group-item">
     <div class="d-flex flex-column flex-sm-row">
       <div class="w-100 w-sm-50">
         <span class="p-1">{{ $t('repetition') }}:</span>
@@ -28,7 +28,7 @@
         </span>
       </div>
     </div>
-  </li>
+  </div>
 </template>
 
 <script>
