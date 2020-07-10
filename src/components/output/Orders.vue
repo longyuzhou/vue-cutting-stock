@@ -21,7 +21,7 @@
       <tbody>
         <tr v-for="order in orders" :key="order.length">
           <td>{{ order.length }}</td>
-          <td>{{ order.count }}</td>
+          <td>{{ order.quantity }}</td>
         </tr>
       </tbody>
     </table>

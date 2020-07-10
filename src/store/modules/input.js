@@ -1,12 +1,11 @@
-const orders = [];
-for (let i = 50; i <= 600; i += 50) {
-  orders.push({ length: i, count: 10 });
-}
-
 const state = {
   stockLength: 600,
   kerf: 0.1,
-  orders: orders,
+  orders: [
+    { length: 100, quantity: 10 },
+    { length: 190, quantity: 10 },
+    { length: 300, quantity: 10 },
+  ],
 };
 
 const getters = {
@@ -31,7 +30,7 @@ const mutations = {
     if (idx > -1) {
       order = state.orders[idx];
       state.orders.splice(idx, 1);
-      order.count += val.count;
+      order.quantity += val.quantity;
     } else {
       order = val;
     }

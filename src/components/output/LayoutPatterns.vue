@@ -53,24 +53,6 @@ export default {
       }
       return layoutPatterns.reduce((acc, curr) => acc + curr.repetition, 0);
     },
-    totalParts: function() {
-      const {
-        data: { orders },
-      } = this;
-      if (!Array.isArray(orders)) {
-        return '';
-      }
-      return orders.reduce((prev, curr) => prev + curr.count, 0);
-    },
-    totalPartsLength: function() {
-      const {
-        data: { orders },
-      } = this;
-      if (!Array.isArray(orders)) {
-        return '';
-      }
-      return orders.reduce((prev, curr) => prev + curr.length * curr.count, 0);
-    },
     materialWaste: function() {
       const {
         data: { layoutPatterns },

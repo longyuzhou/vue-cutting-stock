@@ -24,7 +24,7 @@
       <div class="w-100">
         <span class="p-1">{{ $t('cuts') }}:</span>
         <span v-for="(cut, index) in layoutPattern.cuts" :key="index" class="p-1">
-          {{ cut.length }}&times;{{ cut.count }}
+          {{ cut.length }}&times;{{ cut.repetition }}
         </span>
       </div>
     </div>

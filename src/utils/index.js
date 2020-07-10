@@ -170,7 +170,7 @@ function solve(stockLength, kerf, orders) {
       stockLength,
       kerf,
       orders.reduce((p, c) => {
-        range(c.count).forEach(() => p.push(c.length));
+        range(c.quantity).forEach(() => p.push(c.length));
         return p;
       }, [])
     ),
@@ -193,7 +193,7 @@ function solve(stockLength, kerf, orders) {
         repetition: repetition,
         cuts: countOccurrences(cuts).map((entry) => ({
           length: entry.item,
-          count: entry.count,
+          repetition: entry.count,
         })),
         materialWaste: materialWaste,
         cutWaste: cutWaste,

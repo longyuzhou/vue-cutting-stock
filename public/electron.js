@@ -5,7 +5,6 @@ const path = require('path');
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    title: '材料切割',
     width: 1280,
     height: 720,
     show: false,

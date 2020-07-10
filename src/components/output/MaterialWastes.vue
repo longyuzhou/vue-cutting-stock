@@ -11,7 +11,7 @@
       <tbody>
         <tr v-for="(item, index) in materialWastes" :key="index">
           <td>{{ item.length }}</td>
-          <td>{{ item.count }}</td>
+          <td>{{ item.quantity }}</td>
         </tr>
       </tbody>
     </table>
@@ -38,9 +38,9 @@ export default {
         }
         const entry = result.find((entry) => entry.length === materialWaste);
         if (entry) {
-          entry.count += repetition;
+          entry.quantity += repetition;
         } else {
-          result.push({ length: materialWaste, count: repetition });
+          result.push({ length: materialWaste, quantity: repetition });
         }
       });
       result.sort((a, b) => b.length - a.length);

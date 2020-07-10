@@ -18,7 +18,7 @@
         :placeholder="$t('quantity')"
         :required="required"
         min="1"
-        v-model.number="count"
+        v-model.number="quantity"
       />
 
       <input type="submit" class="btn btn-outline-primary" :value="$t('add')" />
@@ -33,14 +33,14 @@ export default {
   data() {
     return {
       length: '',
-      count: '',
+      quantity: '',
     };
   },
   computed: {
     ...mapGetters('input', ['stockLength']),
     required: function() {
-      const { length, count } = this;
-      return length !== '' || count !== '';
+      const { length, quantity } = this;
+      return length !== '' || quantity !== '';
     },
   },
   methods: {
@@ -48,14 +48,19 @@ export default {
     submit: function(e) {
       e.preventDefault();
 
-      const { length, count, addOrder } = this;
-      if (typeof length !== 'number' || length <= 0 || typeof count !== 'number' || count <= 0) {
+      const { length, quantity, addOrder } = this;
+      if (
+        typeof length !== 'number' ||
+        length <= 0 ||
+        typeof quantity !== 'number' ||
+        quantity <= 0
+      ) {
         return;
       }
-      addOrder({ length, count });
+      addOrder({ length, quantity });
 
       this.length = '';
-      this.count = '';
+      this.quantity = '';
       e.target[0].focus();
     },
   },
