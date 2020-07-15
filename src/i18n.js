@@ -46,6 +46,6 @@ const messages = {
 };
 
 export default new VueI18n({
-  locale: 'en',
+  locale: 'zh',
   messages,
 });

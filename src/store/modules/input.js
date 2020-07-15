@@ -1,6 +1,6 @@
 const state = {
   stockLength: 600,
-  kerf: 0.1,
+  kerf: 0.3,
   orders: [
     { length: 100, quantity: 10 },
     { length: 190, quantity: 10 },

@@ -25,5 +25,3 @@ export default {
   methods: mapActions('input', ['setStockLength']),
 };
 </script>
-
-<style></style>

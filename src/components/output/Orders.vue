@@ -2,11 +2,11 @@
   <div>
     <strong>{{ $t('orders') }}</strong>
     <div class="d-flex flex-column flex-sm-row">
-      <div class="w-100 w-sm-50">
+      <div class="w-100">
         <span class="p-1">{{ $t('stockLength') }}:</span>
         <span class="p-1">{{ data.stockLength }}</span>
       </div>
-      <div class="w-100 w-sm-50">
+      <div class="w-100">
         <span class="p-1">{{ $t('kerf') }}:</span>
         <span class="p-1">{{ data.kerf }}</span>
       </div>

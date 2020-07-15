@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="vh-100 d-lg-flex d-flex-column">
-    <div class="input d-flex flex-column p-2 d-print-none">
+    <div class="input p-2 d-print-none">
       <Input @submit="submit" />
     </div>
 
-    <div class="d-flex flex-column flex-grow-1">
+    <div class="flex-grow-1 overflow-auto">
       <Output />
     </div>
   </div>

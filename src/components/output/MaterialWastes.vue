@@ -10,7 +10,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in materialWastes" :key="index">
-          <td>{{ item.length }}</td>
+          <td>{{ round(item.length, 2) }}</td>
           <td>{{ item.quantity }}</td>
         </tr>
       </tbody>
@@ -20,6 +20,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { round } from '../../utils';
+
 export default {
   computed: {
     ...mapGetters('output', ['data']),
@@ -46,6 +48,9 @@ export default {
       result.sort((a, b) => b.length - a.length);
       return result;
     },
+  },
+  methods: {
+    round,
   },
 };
 </script>

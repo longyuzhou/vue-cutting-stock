@@ -8,6 +8,7 @@
         :placeholder="$t('length')"
         :required="required"
         min="0"
+        step="any"
         :max="stockLength"
         v-model.number="length"
       />

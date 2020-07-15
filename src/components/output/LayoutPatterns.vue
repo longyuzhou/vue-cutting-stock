@@ -2,21 +2,21 @@
   <div>
     <strong>{{ $t('layoutPatterns') }}:</strong>
     <div class="d-flex flex-column flex-sm-row">
-      <div class="w-100 w-sm-50">
+      <div class="w-100">
         <span class="p-1">{{ $t('requiredStocks') }}:</span>
         <span class="p-1">{{ requiredStocks }}</span>
       </div>
-      <div class="w-100 w-sm-50">
+      <div class="w-100">
         <span class="p-1">{{ $t('materialWaste') }}:</span>
         <span class="p-1">{{ defaultValue(round(materialWaste, 2), '') }}</span>
       </div>
     </div>
     <div class="d-flex flex-column flex-sm-row">
-      <div class="w-100 w-sm-50">
+      <div class="w-100">
         <span class="p-1">{{ $t('cutWaste') }}:</span>
         <span class="p-1">{{ defaultValue(round(cutWaste, 2), '') }}</span>
       </div>
-      <div class="w-100 w-sm-50">
+      <div class="w-100">
         <span class="p-1">{{ $t('totalWaste') }}:</span>
         <span class="p-1">
           {{ defaultValue(round(totalWaste, 2), '') }}
@@ -24,14 +24,14 @@
         </span>
       </div>
     </div>
-    <div class="list-group mb-3">
+    <table class="table table-striped table-bordered">
       <LayoutPattern
         v-for="(item, index) in data.layoutPatterns"
         :key="index"
         :stockLength="data.stockLength"
         :layoutPattern="item"
       />
-    </div>
+    </table>
   </div>
 </template>
 

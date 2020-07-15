@@ -3,8 +3,8 @@
     <Orders />
     <LayoutPatterns />
     <MaterialWastes />
-    <div class="text-center d-print-none">
-      <button type="button" class="btn btn-lg btn-link" @click="print">
+    <div class="sticky-top text-center d-print-none">
+      <button type="button" class="btn btn-lg btn-link" onclick="window.print()">
         {{ $t('print') }}
       </button>
     </div>
@@ -17,11 +17,6 @@ import LayoutPatterns from './LayoutPatterns';
 import MaterialWastes from './MaterialWastes';
 
 export default {
-  methods: {
-    print() {
-      window.print();
-    },
-  },
   components: {
     Orders,
     LayoutPatterns,
