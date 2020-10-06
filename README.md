@@ -50,4 +50,4 @@ npm run release
 ## Resources
 
 - [Cutting Stock Problem](https://en.wikipedia.org/wiki/Cutting_stock_problem)
-- [First Fit Decreasing](https://en.wikipedia.org/wiki/Bin_packing_problem)
+- [First Fit Decreasing](https://en.wikipedia.org/wiki/Bin_packing_problem#First_Fit_Decreasing_(FFD))
